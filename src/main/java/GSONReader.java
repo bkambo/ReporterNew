@@ -44,8 +44,20 @@ public class GSONReader {
 
         JsonArray statesArray = rootObject.getAsJsonArray("states");
 
-        for (int i=0; (i < statesArray.length(); i++) {
+        for (int i=0; (i < statesArray.size()); i++) {
             Problem aProblem;
+
+            JsonObject jsonProblemEntry = statesArray.get(i).getAsJsonObject();
+
+            String user = jsonProblemEntry.get("user").getAsString();
+            String building = jsonProblemEntry.get("building").getAsString();
+            String roomNumber = jsonProblemEntry.get("roomNumber").getAsString();
+            String errorType = jsonProblemEntry.get("errorType").getAsString();
+            String notes = jsonProblemEntry.get("notes").getAsString();
+
+            aProblem = new Problem(user, building, roomNumber, errorType, notes);
+
+
 
 
         }

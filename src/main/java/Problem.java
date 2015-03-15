@@ -1,15 +1,17 @@
 /**
  * Created by Pdante on 2015-03-14.
  */
-public class Problem {
+public class Problem implements Comparable<Problem> {
     private String userName;
     private String building;
     private String roomNumber;
     private String errorType;
     private String notes;
 
+    /*
     public Problem() {
     }
+    */
 
 
 
@@ -60,5 +62,14 @@ public class Problem {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public int compareTo(Problem problem2) {
+        /* TODO:  this method should return -1 when problem 1 is sorted before problem 2.
+                                            0 when problem 1 is sorted equal to problem 2
+                                           +1 when problem 1 is sorted after problem 2
+                                usage:  problem1.compareTo(problem2)                  */
+        return 0;
     }
 }
