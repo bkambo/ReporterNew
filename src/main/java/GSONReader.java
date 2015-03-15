@@ -1,46 +1,57 @@
-import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.sun.xml.internal.ws.api.message.Header;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import com.loopj.android.*;
+import sun.misc.BASE64Encoder;
+
 
 /**
  * Created by Pdante on 2015-03-14.
  */
 public class GSONReader {
-    public GSONReader() {
+    public GSONReader() throws IOException {
         Gson gson = new Gson();
 
-        try {
+        //!!! get the raw string from the API
 
-            BufferedReader br = new BufferedReader(
-                    new StringReader("{“entries”:[\n" +
-                            "\t{\n" +
-                            "\t“user”: “features not bugs”,\n" +
-                            "\t“time” : ”04:00”,\n" +
-                            "\t“building” : “MCLD”,\n" +
-                            "\t“roomNumber” : “439”,\n" +
-                            "\t“errorType”: “Water”,  // this should be an ennum\n" +
-                            "“specifics”: “leaky faucet”, // another ennum for each error type\n" +
-                            "“notes”: “yo dawg, this faucet was super leaky”,\n" +
-                            "}\n" +
-                            "{\n" +
-                            "“user”: “A Science Student”,\n" +
-                            "\t“time” : ”04:00”,\n" +
-                            "\t“building” : “BIOL”,\n" +
-                            "\t“roomNumber” : “2000”,\n" +
-                            "\t“errorType”: “Power”,  // this should be an ennum\n" +
-                            "“specifics”: “flickering light”, // another ennum for each error type\n" +
-                            "“notes”: “yo dawg, this light was super flickery”,\n" +
-                            "}\n" +
-                            "]\n" +
-                            "}\n"));
 
-            //convert the json string back to object
-            Problem problem = gson.fromJson(br, Problem.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        String urlString = "http://preview.layer7tech.com:8080/hacks/v1/appstates?appid=team3&userid=team3";
+//        Header auth = new BasicHeader ("Authorization", "Basic <replace with your credential>");
+//        Header contentType = basicHeader("Content-Type", "application/json");
+
+        URL url = new URL(urlString);
+
+        URLConnection conn = url.openConnection();
+
+        conn.addRequestProperty("Authorization", "Basic " + new BASE64Encoder().encode("".getBytes()));// loook up base64 encoding of header
+
+        InputStream inputStream = (InputStream) conn.getContent(); //look up read url connection
+
+        JsonReader reader = new JsonReader(
+                new InputStreamReader(inputStream));
+
+        JsonElement root = new JsonParser().parse(reader);
+
+        JsonObject rootObject = root.getAsJsonObject();
+
+        JsonArray statesArray = rootObject.getAsJsonArray("states");
+
+        for (int i=0; (i < statesArray.length(); i++) {
+            Problem aProblem;
+
+
         }
+
+        //convert the json string back to object
+
+        Problem problem = gson.fromJson(reader);
     }
 }
