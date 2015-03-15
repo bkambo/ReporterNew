@@ -38,6 +38,6 @@ public class AppTests {
     }
     @Test
     public void GSON(){
-        GSONParse();
+        //GSONParse();
     }
 }

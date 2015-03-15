@@ -11,10 +11,11 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(value = "/poops", method = RequestMethod.GET)
+
 
 public class HelloController {
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getdata() {
 
         List<String> list = getList();
